@@ -436,7 +436,14 @@ export default function Home() {
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-slate-200">
                                     <thead className="bg-slate-50">
-                                        <tr>
+                                        <tr onClick={(e) => {
+        if (e.target.type !== 'checkbox') {
+            const newSelectedID = selectedID.includes(member.user_id)
+                ? selectedID.filter(id => id !== member.user_id)
+                : [...selectedID, member.user_id];
+            setSelectedID(newSelectedID);
+        }
+    }}>
                                             <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                                                 <input
                                                     type="checkbox"
@@ -515,23 +522,25 @@ export default function Home() {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-slate-200">
-                        {logs.map((log, idx) => {
-                            const member = members.find(m => m.user_id === log.user_id);
-                            return (
-                                <tr key={idx}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
-                                        {member ? member.name : log.user_id}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">{log.reason}</td>
-                                    <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${log.change > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                        {log.change > 0 ? `+${log.change}` : log.change}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                                        {new Date(log.date_added).toLocaleString()}
-                                    </td>
-                                </tr>
-                            );
-                        })}
+                        {logs
+  .sort((a, b) => new Date(b.date_added) - new Date(a.date_added))
+  .map((log, idx) => {
+    const member = members.find(m => m.user_id === log.user_id);
+    return (
+      <tr key={idx}>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+          {member ? member.name : log.user_id}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">{log.reason}</td>
+        <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${log.change > 0 ? 'text-green-600' : 'text-red-600'}`}>
+          {log.change > 0 ? `+${log.change}` : log.change}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+          {new Date(log.date_added).toLocaleString()}
+        </td>
+      </tr>
+    );
+  })}
                     </tbody>
                 </table>
             </div>

@@ -29,9 +29,10 @@ export async function POST(request) {
 
     }
         const res2 = await client.query(
-        `SELECT *
-FROM points_logs;`,
-        );
+    `SELECT *
+     FROM points_logs
+     LIMIT 15;`,
+);
         return NextResponse.json({ res: res2.rows });
     } catch (err) {
         return NextResponse.json({ error: 'Database error', details: err.message }, { status: 500 });
