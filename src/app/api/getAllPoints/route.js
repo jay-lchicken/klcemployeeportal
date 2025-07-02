@@ -31,6 +31,8 @@ export async function POST(request) {
         const res2 = await client.query(
     `SELECT *
      FROM points_logs
+    ORDER BY date_added DESC
+
      LIMIT 15;`,
 );
         return NextResponse.json({ res: res2.rows });

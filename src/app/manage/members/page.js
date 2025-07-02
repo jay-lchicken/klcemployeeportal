@@ -436,14 +436,8 @@ export default function Home() {
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-slate-200">
                                     <thead className="bg-slate-50">
-                                        <tr onClick={(e) => {
-        if (e.target.type !== 'checkbox') {
-            const newSelectedID = selectedID.includes(member.user_id)
-                ? selectedID.filter(id => id !== member.user_id)
-                : [...selectedID, member.user_id];
-            setSelectedID(newSelectedID);
-        }
-    }}>
+                                       <tr
+    >
                                             <th className="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                                                 <input
                                                     type="checkbox"
@@ -466,7 +460,16 @@ export default function Home() {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-slate-200">
                                         {filteredMembers.map((member, idx) => (
-                                            <tr key={idx} className="hover:bg-slate-50 transition-colors duration-150">
+                                            <tr key={idx} className="hover:bg-slate-50 transition-colors duration-150 " key={idx}
+    className="hover:bg-slate-50 transition-colors duration-150"
+    onClick={(e) => {
+        if (e.target.type !== 'checkbox' && e.target.tagName.toLowerCase() !== 'label') {
+            const newSelectedID = selectedID.includes(member.user_id)
+                ? selectedID.filter(id => id !== member.user_id)
+                : [...selectedID, member.user_id];
+            setSelectedID(newSelectedID);
+        }
+    }}>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <input
                                                         type="checkbox"
@@ -573,7 +576,7 @@ export default function Home() {
                 <input
                     type="number"
                     value={pointsChange}
-                    onChange={(e) => setPointsChange(parseInt(e.target.value))}
+onChange={(e) => setPointsChange(e.target.value === '' ? '' : Number(e.target.value))}
                     placeholder="e.g. 10 or -5"
                     className="w-full mb-4 px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
